@@ -1,7 +1,5 @@
 package src.api;
-
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 import src.model.customer.Customer;
@@ -10,58 +8,32 @@ import src.model.room.IRoom;
 import src.service.customer.CustomerService;
 import src.service.reservation.ReservationService;
 
-/**
- * @author Cristian Rodriguez
- *
- */
-
 public class HotelResource {
-    private static final HotelResource single = new HotelResource();
 
-    private final CustomerService customerService = CustomerService.getSingle();
-    private final ReservationService reservationService = ReservationService.getSingle();
-
-    private HotelResource() {}
-
-    public static HotelResource getSingle() {
-        return single;
+    public static Customer getCustomer(String email) {
+        return CustomerService.getCustomer(email);
     }
 
-    public Customer getCustomer(String email) {
-        return customerService.getCustomer(email);
+    public static void createCustomer(String email, String firstName, String lastName) {
+        CustomerService.addCustomer(email, firstName, lastName);
     }
 
-    public void createACustomer(String email, String firstName, String lastName) {
-        customerService.addCustomer(firstName, lastName, email);
+    public static IRoom getRoom(String roomNumber) {
+        return ReservationService.getRoom(roomNumber);
     }
 
-    public IRoom getRoom(String roomNumber) {
-        return reservationService.getRoom(roomNumber);
+    public static Reservation bookRoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
+        Customer customer = CustomerService.getCustomer(customerEmail);
+        return ReservationService.reserveRoom(customer, room, checkInDate, checkOutDate);
     }
 
-    public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate) {
-        return reservationService.reserveARoom(getCustomer(customerEmail), room, checkInDate, checkOutDate);
+    public static Collection<Reservation> getCustomerReservations(String customerEmail) {
+        Customer customer = CustomerService.getCustomer(customerEmail);
+        return ReservationService.getCustomerReservations(customer);
     }
 
-    public Collection<Reservation> getCustomersReservations(String customerEmail) {
-        final Customer customer = getCustomer(customerEmail);
-
-        if (customer == null) {
-            return Collections.emptyList();
-        }
-
-        return reservationService.getCustomersReservation(getCustomer(customerEmail));
+    public static Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
+        return ReservationService.findRooms(checkInDate, checkOutDate);
     }
 
-    public Collection<IRoom> findARoom(final Date checkIn, final Date checkOut) {
-        return reservationService.findRooms(checkIn, checkOut);
-    }
-
-    public Collection<IRoom> findAlternativeRooms(final Date checkIn, final Date checkOut) {
-        return reservationService.findAlternativeRooms(checkIn, checkOut);
-    }
-
-    public Date addDefaultPlusDays(final Date date) {
-        return reservationService.addDefaultPlusDays(date);
-    }
 }

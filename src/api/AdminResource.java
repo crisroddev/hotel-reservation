@@ -1,41 +1,31 @@
 package src.api;
 
 import java.util.Collection;
-import java.util.List;
 
 import src.model.customer.Customer;
+import src.model.reservation.Reservation;
 import src.model.room.IRoom;
 import src.service.customer.CustomerService;
 import src.service.reservation.ReservationService;
 
 public class AdminResource {
-    private static final AdminResource single = new AdminResource();
-    private final CustomerService customerService = CustomerService.getSingle();
-    private final ReservationService reservationService = ReservationService.getSingle();
 
-    private AdminResource() {}
-
-    public static AdminResource getSingle() {
-        return single;
+    public static Customer getCustomer(String email) {
+        return CustomerService.getCustomer(email);
     }
 
-    public Customer getCustomer(String email) {
-        return customerService.getCustomer(email);
+    public static void addRoom(IRoom room) {
+        ReservationService.addRoom(room);
     }
 
-    public void addRoom(List<IRoom> rooms) {
-        rooms.forEach(reservationService::addRoom);
+    public static Collection<IRoom> getAllRooms() {
+        return ReservationService.getAllRooms();
     }
 
-    public Collection<IRoom> getAllRooms() {
-        return reservationService.getAllRooms();
+    public static Collection<Customer> getAllCustomers() {
+        return CustomerService.getAllCustomers();
     }
 
-    public Collection<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
-    }
+    public static Collection<Reservation> getAllReservations() { return ReservationService.getAllReservations(); }
 
-    public void displayAllReservations() {
-        reservationService.printAllReservation();
-    }
 }

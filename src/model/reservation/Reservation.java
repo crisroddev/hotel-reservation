@@ -1,46 +1,65 @@
 package src.model.reservation;
+
+import java.util.Date;
+import java.util.Objects;
+
 import src.model.customer.Customer;
 import src.model.room.IRoom;
 
-import java.util.*;
-
-
-
-/**
- * @author Cristian Rodriguez
- *
- */
-
 public class Reservation {
-    private final Customer customer;
-    private final IRoom room;
-    private final Date checkInDate;
-    private final Date checkOutDate;
 
-    public Reservation(final Customer customer, final IRoom room, final Date checkInDate, final Date checkOutDate){
+    private Customer customer;
+    private IRoom room;
+    private Date checkInDate;
+    private Date checkOutDate;
+
+    public Reservation(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
         this.customer = customer;
         this.room = room;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
     }
 
-    public IRoom getRoom(){
-        return this.room;
-    }
-
-    public Date checkInDate(){
+    public Date getCheckInDate() {
         return this.checkInDate;
     }
 
-    public Date checkOutDate(){
+    public Date getCheckOutDate() {
         return this.checkOutDate;
     }
 
+    public Customer getCustomer() {
+        return this.customer;
+    }
+
+    public IRoom getRoom() {
+        return this.room;
+    }
+
+    public boolean isRoomReserved(Date checkInDate, Date checkOutDate) {
+        if (checkInDate.before(this.checkOutDate) && checkOutDate.after(this.checkInDate)) {
+            return true;
+        }
+        return false;
+    }
+
+    public String toString() {
+        return "Reservation for " + this.customer +
+                ", " + room +
+                ", Check-In on: " + this.checkInDate +
+                ", Check-Out on: " + this.checkOutDate;
+    }
+
     @Override
-    public String toString(){
-        return "Customer :" + this.customer.toString()
-                + "\nRoom: " + this.room.toString()
-                + "\nCheck in Date: " + this.checkInDate.toString()
-                + "\nCheck out Date: " + this.checkOutDate;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Reservation)) return false;
+        Reservation that = (Reservation) o;
+        return customer.equals(that.customer) && room.equals(that.room) && checkInDate.equals(that.checkInDate) && checkOutDate.equals(that.checkOutDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(customer, room, checkInDate, checkOutDate);
     }
 }

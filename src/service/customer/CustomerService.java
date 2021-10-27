@@ -1,35 +1,25 @@
 package src.service.customer;
-import src.model.customer.Customer;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @author Cristian Rodriguez
- *
- */
+import src.model.customer.Customer;
 
 public class CustomerService {
-    private static final CustomerService single = new CustomerService();
 
-    private final Map<String, Customer> customers = new HashMap<>();
+    private static Map<String, Customer> customerMap = new HashMap<String, Customer>();
 
-    private CustomerService(){}
-
-    public static CustomerService getSingle(){
-        return single;
+    public static void addCustomer(String email, String firstName, String lastName) {
+        Customer newCustomer = new Customer(firstName, lastName, email);
+        customerMap.put(newCustomer.getEmail(), newCustomer);
     }
 
-    public void addCustomer(final String firstName, final String lastName, String email) {
-        customers.put(email, new Customer(firstName, lastName, email));
+    public static Customer getCustomer(String customerEmail) {
+        return customerMap.get(customerEmail);
     }
 
-    public Customer getCustomer(final String customerEmail){
-        return customers.get(customerEmail);
+    public static Collection<Customer> getAllCustomers() {
+        return customerMap.values();
     }
 
-    public Collection<Customer> getAllCustomers(){
-        return customers.values();
-    }
 }

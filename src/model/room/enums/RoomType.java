@@ -1,26 +1,28 @@
 package src.model.room.enums;
 
-/** 
- * @author Cristian Rodriguez
- * 
-*/
+import java.util.HashMap;
+import java.util.Map;
 
 public enum RoomType {
-    SINGLE("1"),
-    DOUBLE("2");
+    SINGLE (1),
+    DOUBLE (2);
 
-    public final String label;
+    private int numberOfBeds;
 
-    private RoomType(String label) {
-        this.label = label;
-    }
+    private static final Map<Integer, RoomType> BY_NUMBER_OF_BEDS = new HashMap<Integer, RoomType>();
 
-    public static RoomType valueOfLabel(String label) {
+    static {
         for (RoomType roomType : values()) {
-            if (roomType.label.equals(label)) {
-                return roomType;
-            }
+            BY_NUMBER_OF_BEDS.put(roomType.numberOfBeds, roomType);
         }
-        throw new IllegalArgumentException();
     }
+
+    RoomType(int numberOfBeds) {
+        this.numberOfBeds = numberOfBeds;
+    }
+
+    public static RoomType valueforNumberOfBeds(int numberOfBeds) {
+        return BY_NUMBER_OF_BEDS.get(numberOfBeds);
+    }
+
 }

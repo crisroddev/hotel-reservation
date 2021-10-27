@@ -1,64 +1,58 @@
 package src.model.room;
-import src.model.room.enums.RoomType;
 
 import java.util.Objects;
 
+import src.model.room.enums.RoomType;
 
+public class Room  implements IRoom {
 
-/**
- * @author Cristian Rodriguez
- *
- */
+    protected String roomNumber;
+    protected Double price;
+    protected RoomType enumeration;
 
-public class Room implements IRoom {
-
-    private final String roomNumber;
-    private final Double price;
-    private final RoomType enumeration;
-
-    public Room(final String roomNumber, final Double price, final RoomType enumeration){
+    public Room(String roomNumber, Double price, RoomType enumeration) {
         this.roomNumber = roomNumber;
         this.price = price;
-        this.enumeration =enumeration;
+        this.enumeration = enumeration;
     }
 
-    public String getRoomNumber(){
+    @Override
+    public String getRoomNumber() {
         return this.roomNumber;
     }
 
-    public Double getRoomPrice(){
+    @Override
+    public Double getRoomPrice() {
         return this.price;
     }
 
-    public RoomType getRoomType(){
+    @Override
+    public RoomType getRoomType() {
         return this.enumeration;
     }
 
-    public boolean isFree(){
-        return this.price != null && this.price.equals(0.0);
-    }
-
     @Override
-    public String toString() {
-        return "Room Number: " + this.roomNumber
-                + "Price $: " + this.price
-                + "Enumeration " + this.enumeration;
-    }
-
-    @Override
-    public boolean equals(Object obj){
-        if(obj == this){
+    public Boolean isFree() {
+        if (this.price == (double) 0) {
             return true;
         }
-        if(!(obj instanceof Room)) {
-            return false;
-        }
-        final Room room = (Room) obj;
-        return Objects.equals(this.roomNumber, room.roomNumber);
+        return false;
+    }
+
+    public String toString() {
+        return "Room number: " + this.roomNumber + " " + this.enumeration + " bed room Price: $" + this.price;
     }
 
     @Override
-    public int hashCode(){
-        return Objects.hash(roomNumber);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Room)) return false;
+        Room room = (Room) o;
+        return roomNumber.equals(room.roomNumber) && price.equals(room.price) && enumeration == room.enumeration;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber, price, enumeration);
     }
 }
